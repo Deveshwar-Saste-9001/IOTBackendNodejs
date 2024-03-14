@@ -3,37 +3,49 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 
-const port =  process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 app.use(cors());
-var i=false;
+let isLedOn = false; // Variable to store LED state
 
 app.use(bodyParser.json());
 
+// Toggle LED state and send response
 app.post('/api/led', (req, res) => {
   const { state } = req.body;
-  console.log('Received request to toggle LED with state:', state);
-  if(i){
-    return "ON";
-  }else{
-    return "OFF";
+  
+  // Check if state is valid (optional)
+  if (state !== 'ON' && state !== 'OFF') {
+    return res.status(400).json({ error: 'Invalid state' });
   }
-//return res;
+  
+  // Toggle LED state
+  isLedOn = state === 'ON';
+  
+  console.log('Received request to toggle LED with state:', state);
+  
+  // Send LED state as response
+  return res.json({ state: isLedOn ? 'ON' : 'OFF' });
 });
+
+// Turn LED off
 app.post('/api/led/off', (req, res) => {
-  const { state } = req.body;
-  i=false;
-  console.log('Received request to toggle LED with state:', i);
-  res.sendStatus(200);
+  isLedOn = false; // Set LED state to OFF
+  console.log('Received request to turn LED off');
+  return res.sendStatus(200);
 });
+
+// Turn LED on
 app.post('/api/led/on', (req, res) => {
-  const { state } = req.body;
-  i=true;
-  console.log('Received request to toggle LED with state:', i);
-  res.sendStatus(200);
+  isLedOn = true; // Set LED state to ON
+  console.log('Received request to turn LED on');
+  return res.sendStatus(200);
 });
-app.get('/',(req, res) => {
-    console.log('Hello');
-  });
+
+app.get('/', (req, res) => {
+  console.log('Hello');
+  return res.send('Hello');
+});
+
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);
 });
