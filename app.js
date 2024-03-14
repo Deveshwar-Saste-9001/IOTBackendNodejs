@@ -31,7 +31,7 @@ app.post('/api/led/on', (req, res) => {
   console.log('Received request to toggle LED with state:', i);
   res.sendStatus(200);
 });
-app.post('/',(req, res) => {
+app.get('/',(req, res) => {
     console.log('Hello');
   });
 app.listen(port, () => {
