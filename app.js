@@ -13,11 +13,11 @@ app.post('/api/led', (req, res) => {
   const { state } = req.body;
   console.log('Received request to toggle LED with state:', state);
   if(i){
-    res.json({ message: `ON` });
+    return res.json({ message: `ON` });
   }else{
-    res.json({ message: `OFF` });
+    return res.json({ message: `OFF` });
   }
-return res;
+//return res;
 });
 app.post('/api/led/off', (req, res) => {
   const { state } = req.body;
