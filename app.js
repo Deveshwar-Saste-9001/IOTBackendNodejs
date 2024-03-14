@@ -17,7 +17,7 @@ app.post('/api/led', (req, res) => {
   }else{
     res.json({ message: `OFF` });
   }
-
+return res;
 });
 app.post('/api/led/off', (req, res) => {
   const { state } = req.body;
